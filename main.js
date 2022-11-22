@@ -3,6 +3,8 @@ var fs = require('fs');
 var url = require('url');
 var qs = require('querystring');
  
+
+//html의 중복을 없애기 위한 템플릿
 function templateHTML(title, list, body){
   return `
   <!doctype html>
@@ -20,6 +22,8 @@ function templateHTML(title, list, body){
   </html>
   `;
 }
+
+//css html, js 파일을 읽어 와서 html에 맞춰주는 함수
 function templateList(filelist){
   var list = '<ul>';
   var i = 0;
@@ -37,6 +41,7 @@ var app = http.createServer(function(request,response){
     var pathname = url.parse(_url, true).pathname;
     if(pathname === '/'){
       if(queryData.id === undefined){
+        //data에 있는 파일들을 읽어 온 다음 그 리스트로 화면에 뿌리는 작업
         fs.readdir('./data', function(error, filelist){
           var title = 'Welcome';
           var description = 'Hello, Node.js';
@@ -76,6 +81,8 @@ var app = http.createServer(function(request,response){
       });
     } else if(pathname === '/create_process'){
       var body = '';
+
+      //post request에 대한 대응
       request.on('data', function(data){
           body = body + data;
       });
